@@ -10,8 +10,6 @@ public class Main {
         final File OUTPUT_FILE_FOR_INTEGERS = Path.of("src", "out", "integers.txt").toFile();
         final File OUTPUT_FILE_FOR_STRINGS = Path.of("src", "out", "strings.txt").toFile();
 
-        final Pattern FLOAT_PATTERN = Pattern.compile("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$");
-        final Pattern INTEGER_PATTERN = Pattern.compile("^[-+]?\\d+$");
 
 
         try (BufferedReader reader = new BufferedReader(new FileReader(INPUT_FILE));
@@ -19,18 +17,15 @@ public class Main {
              BufferedWriter integersWriter = new BufferedWriter(new FileWriter(OUTPUT_FILE_FOR_INTEGERS));
              BufferedWriter stringsWriter = new BufferedWriter(new FileWriter(OUTPUT_FILE_FOR_STRINGS))) {
             List<String> lines = reader.lines().toList();
-            for (String line : lines) {
-                if(FLOAT_PATTERN.matcher(line).matches()) {
-                    floatsWriter.write(line);
-                    floatsWriter.newLine();
-                }
 
-                else if(INTEGER_PATTERN.matcher(line).matches()) {
+            for (String line : lines) {
+                if (Pattern.matches("-?\\d+", line)) {
                     integersWriter.write(line);
                     integersWriter.newLine();
-                }
-
-                else {
+                } else if (Pattern.matches("-?\\d+(\\.\\d+)?([eE][+-]?\\d+)?", line)) {
+                    floatsWriter.write(line);
+                    floatsWriter.newLine();
+                } else {
                     stringsWriter.write(line);
                     stringsWriter.newLine();
                 }
